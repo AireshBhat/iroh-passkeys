@@ -1,0 +1,19 @@
+[build]
+# Default target for WASM builds
+target = "wasm32-unknown-unknown"
+
+[target.wasm32-unknown-unknown]
+# Use wasm-pack compatible linker settings
+runner = "wasm-bindgen-test-runner"
+
+[unstable]
+# Enable features for better WASM build experience
+build-std = ["std", "panic_abort"]
+
+[profile.wasm-release]
+inherits = "release"
+opt-level = "z"          # Optimize for size aggressively
+lto = true               # Link-time optimization
+strip = true             # Strip symbols
+panic = "abort"          # Abort on panic (smaller code)
+codegen-units = 1        # Single codegen unit for maximum optimization

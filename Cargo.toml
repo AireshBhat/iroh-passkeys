@@ -1,0 +1,73 @@
+[package]
+name = "iroh-wallet-wasm"
+version = "0.1.0"
+edition = "2021"
+authors = ["Iroh Wallet Team"]
+description = "WASM-based Iroh personal node for mobile browsers with WebAuthn PRF authentication"
+repository = "https://github.com/yourusername/iroh-wallet-wasm"
+license = "MIT OR Apache-2.0"
+rust-version = "1.75"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[features]
+default = ["console_error_panic_hook"]
+
+[dependencies]
+# Iroh P2P networking library
+iroh = { version = "0.33", default-features = false }
+
+# WASM bindings
+wasm-bindgen = { version = "0.2", features = ["serde-serialize"] }
+wasm-bindgen-futures = "0.4"
+js-sys = "0.3"
+web-sys = { version = "0.3", features = [
+    "console",
+    "Window",
+    "Document",
+    "Element",
+    "HtmlElement",
+] }
+
+# Cryptography
+hkdf = "0.12"
+sha2 = "0.10"
+ed25519-dalek = { version = "2.1", default-features = false, features = ["zeroize"] }
+zeroize = { version = "1.7", features = ["derive"] }
+subtle = "2.5"
+
+# Error handling
+thiserror = "1.0"
+anyhow = "1.0"
+
+# Debugging
+console_error_panic_hook = { version = "0.1", optional = true }
+
+# Memory allocator (smaller bundle size)
+wee_alloc = { version = "0.4", optional = true }
+
+# Random number generation for WASM
+getrandom = { version = "0.3", features = ["wasm_js"] }
+rand = { version = "0.8", features = ["getrandom"] }
+
+# Node ID encoding (z-base32)
+zbase32 = "0.1"
+
+[dev-dependencies]
+wasm-bindgen-test = "0.3"
+
+[profile.release]
+# Optimize for size in release builds
+opt-level = "s"
+lto = true
+# Strip debug symbols
+strip = true
+# Reduce codegen units for better optimization
+codegen-units = 1
+# Enable panic abort for smaller binary
+panic = "abort"
+
+[profile.dev]
+opt-level = 0
+debug = true

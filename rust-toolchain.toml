@@ -1,0 +1,8 @@
+[toolchain]
+# Use stable Rust channel for WASM compatibility
+channel = "stable"
+# Minimum version required for the project
+# Note: Users should have Rust 1.75.0 or newer
+components = ["rustfmt", "clippy", "rust-src"]
+targets = ["wasm32-unknown-unknown"]
+profile = "default"
